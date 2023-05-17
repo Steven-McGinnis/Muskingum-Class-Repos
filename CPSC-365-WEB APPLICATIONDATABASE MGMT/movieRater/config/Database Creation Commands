@@ -1,0 +1,117 @@
+CREATE DATABASE movieRater;
+USE movieRater;
+
+CREATE TABLE User (
+UserID INT AUTO_INCREMENT NOT NULL,
+UserName VARCHAR(255) NOT NULL UNIQUE,
+Email VARCHAR(255) NOT NULL UNIQUE,
+Password VARCHAR(255) NOT NULL,
+Administrator BOOLEAN NOT NULL DEFAULT 0,
+Bio VARCHAR(255),
+lastLogin DATETIME NOT NULL DEFAULT(current_timestamp),
+timeBan TINYINT NOT NULL DEFAULT 0,
+avatar VARCHAR(255),
+PRIMARY KEY (UserID)
+)engine=InnoDB;
+
+CREATE TABLE Movies (
+MovieID INT NOT NULL AUTO_INCREMENT UNIQUE,
+Name VARCHAR(255) NOT NULL,
+Date INT NOT NULL,
+Description VARCHAR(255),
+Image VARCHAR(255),
+Thumb VARCHAR(255),
+PRIMARY KEY (MovieID)
+)engine=InnoDB;
+
+CREATE TABLE Actors(
+actorID INT AUTO_INCREMENT UNIQUE NOT NULL,
+Name VARCHAR(255)  NOT NULL,
+PRIMARY KEY(actorID)
+)engine=InnoDB;
+
+CREATE TABLE FilmCast(
+castID INT AUTO_INCREMENT UNIQUE NOT NULL,
+MovieID INT NOT NULL,
+actorID INT NOT NULL,
+PRIMARY KEY(castID),
+FOREIGN KEY (actorID) REFERENCES Actors(actorID),
+FOREIGN KEY (movieID) REFERENCES Movies(movieID)
+)engine=InnoDB;
+
+CREATE TABLE tags(
+tagID INT AUTO_INCREMENT NOT NULL,
+tagName VARCHAR(255) NOT NULL,
+PRIMARY KEY(tagID)
+)engine=INNODB;
+
+INSERT INTO tags (tagName) VALUES ('Drama');
+INSERT INTO tags (tagName) VALUES ('Comedy');
+INSERT INTO tags (tagName) VALUES ('Crime');
+INSERT INTO tags (tagName) VALUES ('Family');
+INSERT INTO tags (tagName) VALUES ('Action');
+INSERT INTO tags (tagName) VALUES ('Adventure');
+INSERT INTO tags (tagName) VALUES ('Animation');
+INSERT INTO tags (tagName) VALUES ('Horror');
+INSERT INTO tags (tagName) VALUES ('Music');
+INSERT INTO tags (tagName) VALUES ('Biography');
+INSERT INTO tags (tagName) VALUES ('Documentary');
+INSERT INTO tags (tagName) VALUES ('Sport');
+INSERT INTO tags (tagName) VALUES ('News');
+INSERT INTO tags (tagName) VALUES ('Film_Noir');
+INSERT INTO tags (tagName) VALUES ('Romance');
+INSERT INTO tags (tagName) VALUES ('Short');
+INSERT INTO tags (tagName) VALUES ('Thriller');
+INSERT INTO tags (tagName) VALUES ('Mystery');
+INSERT INTO tags (tagName) VALUES ('Fantasy');
+INSERT INTO tags (tagName) VALUES ('Sci-Fi');
+INSERT INTO tags (tagName) VALUES ('History');
+INSERT INTO tags (tagName) VALUES ('Reality-TV');
+INSERT INTO tags (tagName) VALUES ('War');
+INSERT INTO tags (tagName) VALUES ('Talk-Show');
+INSERT INTO tags (tagName) VALUES ('Musical');
+INSERT INTO tags (tagName) VALUES ('Western');
+INSERT INTO tags (tagName) VALUES ('Game-Show');
+INSERT INTO tags (tagName) VALUES ('Adult');
+
+CREATE TABLE taggedMovies(
+ID INT AUTO_INCREMENT NOT NULL,
+tagID INT NOT NULL,
+MovieID INT NOT NULL,
+PRIMARY KEY(ID),
+FOREIGN KEY(tagID) REFERENCES tags(tagID),
+FOREIGN KEY (movieID) REFERENCES Movies(movieID)
+)engine=INNODB;
+
+CREATE TABLE Rating (
+reviewID INT AUTO_INCREMENT UNIQUE NOT NULL,
+rating INT,
+UserID INT NOT NULL,
+MovieID INT NOT NULL,
+PRIMARY KEY(reviewID),
+FOREIGN KEY(UserID) REFERENCES User(UserID),
+FOREIGN KEY(MovieID) REFERENCES Movies(MovieID)
+)engine=InnoDB;
+
+CREATE TABLE Comments (
+Timestamp DATETIME NOT NULL DEFAULT(current_timestamp),
+CommentID INT AUTO_INCREMENT UNIQUE NOT NULL,
+UserID INT,
+MovieID INT,
+Comment TEXT(65535) NOT NULL,
+PRIMARY KEY(CommentID),
+FOREIGN KEY(UserID) REFERENCES User(UserID),
+FOREIGN KEY(MovieID) REFERENCES Movies(MovieID)
+)engine=InnoDB;
+
+CREATE TABLE Friends (
+frID INT NOT NULL AUTO_INCREMENT,
+UserID INT NOT NULL,
+FriendID  INT NOT NULL,
+Status INT NOT NULL DEFAULT 0,
+PRIMARY KEY(frID),
+FOREIGN KEY(UserID) REFERENCES user(UserID),
+FOREIGN KEY(FriendID) REFERENCES user(UserID)
+)engine=InnoDB;
+
+
